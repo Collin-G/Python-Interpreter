@@ -4,7 +4,7 @@
 
 
 class tokens{
-
+    //class to store tokens for parsing. Tokens have special characteristics for them to be sorted efficiently.
     public:
         tokens(std::string symb, std::string type){
             _symb = symb;
@@ -38,6 +38,7 @@ class tokens{
 };
 
 bool in_paren(int a, int b, int c, std::vector<tokens> s){
+    //check if expression is in brackets
     int total{0};
     
     int paren_count{0};
@@ -110,7 +111,7 @@ bool in_paren(int a, int b, int c, std::vector<tokens> s){
     return false;
 
 }
-
+//preprocessing step to convert all division operators into multiplication by reciprocal and all subraction operators into adding a negative
 void preliminary(int k, int j, std::vector<tokens> &s){
     for(int i{k}; i <= j; ++i){
         if (s[i].get_symbol() == "-"){
@@ -168,6 +169,8 @@ void head_tail(int &a, int &b, std::vector<tokens> s){
     }
 
 }
+
+//recursively evaluate expressions using abtract syntax tree theory
 float arithmetic(int k, int j, std::vector<tokens> s){
     
     
@@ -219,10 +222,7 @@ float arithmetic(int k, int j, std::vector<tokens> s){
             
             return(arithmetic(k,i-1, s)+arithmetic(i+1,j, s));
         }
-        // else if(in_paren == false && (s[i].get_symbol() == "-")){
-        
-        //     return(arithmetic(k,i-1, s) - arithmetic(i+1,j, s));
-        // }
+      
         
 
         else if(in_paren(k,i,j,s) == false && (s[i].get_symbol() == "*") && flag == false){
@@ -237,10 +237,7 @@ float arithmetic(int k, int j, std::vector<tokens> s){
             int y = static_cast<int>(arithmetic(i+1,j, s));
             return(x % y);
         }
-        // else if(in_paren == false && (s[i].get_symbol() == "/") && flag == false){
-            
-        //     return(arithmetic(k,i-1, s)/arithmetic(i+1,j, s));
-        // }
+        
 
 
     }
@@ -250,7 +247,7 @@ float arithmetic(int k, int j, std::vector<tokens> s){
 
 
 bool comparison(int i, int start, int end, std::vector<tokens> s){
-    
+    //check lhs and rhs of comparsion operators
     if(s[i].get_symbol() == "!="){
         if((s[i-1].get_type() == "int" || s[i-1].get_type() == "op") && (s[i+1].get_type() == "int" || s[i+1].get_type() == "op")){
             
@@ -414,6 +411,7 @@ bool comparison(int i, int start, int end, std::vector<tokens> s){
 }
 
 void assignment(int i, int start, int end, std::vector<tokens> s, std::vector<tokens> &v){
+    //recognizes variable assignments and stores variables in a vector
     for(int k{0}; k<v.size(); k++){
         
         if(s[i-1].get_symbol() == v[k].get_type()){
