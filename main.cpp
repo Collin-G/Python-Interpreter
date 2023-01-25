@@ -17,14 +17,20 @@ int while_tabs{0};
 bool loop{false};
 
 
+//variable storage
 std::vector<tokens> variables; 
+//stores textfile
 std::vector<tokens> storage;
+//stores line for parsing
 std::vector<tokens> line_storage;
+
 
 void openFile(std::ifstream& inFile, std::string fname) {
     inFile.open(fname);
 }
 
+
+//read file line by line, char by char
 void processFile(std::ifstream& inFile){
     
     std::string line, word;
@@ -220,6 +226,7 @@ void processFile(std::ifstream& inFile){
     }
 }
 
+//execute line of file
 void execute_line(std::vector<tokens> &s){
     int start{0};
     int end{100};
@@ -325,19 +332,12 @@ int main(){
 
     processFile(inFile);
 
-    // head_tail(start,end, storage);
-    // preliminary(start,end,storage);
-    
-   
-    
-    
-    
-    //std::cout<<arithmetic(start, end, storage);
     
 
     for(int i{0}; i < storage.size(); ++i){
         
         if(expected_indents == while_tabs && loop == true){
+                //if condition is met, go back to beginning of loop
                 i = while_pos;
                 line_storage.clear();
                 loop = false;    
@@ -345,6 +345,7 @@ int main(){
             
 
         if(storage[i].get_symbol() == "while"){
+            //marks start of while loop
             while_pos = i;
             
             
@@ -363,9 +364,7 @@ int main(){
         }
     }
     
-    // for(int i{0}; i < storage.size(); ++i){
-    //     std::cout<<storage[i].get_type()<<" ";
-    // }
+  
     
     return 0;
 }
